@@ -21,34 +21,51 @@ public class StatusEffects implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("Status Effects");
 
 	public static void drawStatusEffects() {
-		Minecraft minecraft = Minecraft.getInstance();
-		Window window = new Window(minecraft);
-		GuiElement gui = new GuiElement();
-		Collection<StatusEffectInstance> collection = minecraft.player.getStatusEffects();
+		final Minecraft minecraft = Minecraft.getInstance();
+		final Window window = new Window(minecraft);
+		final GuiElement gui = new GuiElement();
+
+		final Collection<StatusEffectInstance> collection = minecraft.player.getStatusEffects();
 		if (collection.isEmpty()) {
+			/* why render anything when the collection is empty */
 			return;
 		}
-		int iconPixels = 18;
-		int entrySpacing = 4;
+
+		/* each icon is 18 x 18 pixels */
+		final int iconPixels = 18;
+		/* space between each potion entry */
+		final int entrySpacing = 4;
+
 		int x = 0;
 		int y = (window.getHeight() / 2) - ((iconPixels + (collection.size() > 1 ? entrySpacing : 0)) / 2) * (collection.size() + 1);
+
 		GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		GlStateManager.disableLighting();
-		for (StatusEffectInstance statusEffectInstance : collection) {
-			StatusEffect statusEffect = StatusEffect.BY_ID[statusEffectInstance.getId()];
+		for (final StatusEffectInstance statusEffectInstance : collection) {
+			final StatusEffect statusEffect = StatusEffect.BY_ID[statusEffectInstance.getId()];
+
+			/* render icon */
 			GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 			minecraft.getTextureManager().bind(MENU_LOCATION);
 			if (statusEffect.hasIcon()) {
-				int index = statusEffect.getIconIndex();
+				final int index = statusEffect.getIconIndex();
 				gui.drawTexture(x + 6, y + 7, index % 8 * iconPixels, 198 + index / 8 * iconPixels, iconPixels, iconPixels);
 			}
-			String effectName = I18n.translate(statusEffect.getTranslationKey());
-			String duration = StatusEffect.getDurationString(statusEffectInstance);
+
+			/* effect name */
+			String name = I18n.translate(statusEffect.getTranslationKey());
 			int amplifier = statusEffectInstance.getAmplifier();
 			if (amplifier > 0 && amplifier < 4) {
-				effectName += " " + I18n.translate("enchantment.level." + (amplifier + 1));
+				name += " " + I18n.translate("enchantment.level." + (amplifier + 1));
 			}
-			minecraft.textRenderer.drawWithShadow(effectName, x + 10 + iconPixels, y + 6, 0xFFFFFF);
+			minecraft.textRenderer.drawWithShadow(name, x + 10 + iconPixels, y + 6, 0xFFFFFF);
+
+			/* effect duration*/
+			String duration = StatusEffect.getDurationString(statusEffectInstance);
+			if (statusEffectInstance.getDuration() > 32147) {
+				/* duration threshold taken from https://modrinth.com/mod/statuseffecttimer */
+				duration = "**:**";
+			}
 			minecraft.textRenderer.drawWithShadow(duration, x + 10 + iconPixels, y + 6 + 10, 0x7F7F7F);
 			y += iconPixels + entrySpacing;
 		}
