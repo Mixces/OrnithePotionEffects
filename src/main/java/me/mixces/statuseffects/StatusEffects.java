@@ -1,11 +1,11 @@
-package com.example.example_mod;
+package me.mixces.statuseffects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 
-public class ExampleMod implements ModInitializer {
+public class StatusEffects implements ModInitializer {
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod name as the logger's name.
