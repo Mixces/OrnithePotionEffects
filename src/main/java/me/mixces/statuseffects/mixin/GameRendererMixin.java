@@ -1,6 +1,6 @@
 package me.mixces.statuseffects.mixin;
 
-import me.mixces.statuseffects.StatusEffectsHUD;
+import me.mixces.statuseffects.StatusEffects;
 import net.minecraft.client.render.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +19,6 @@ public class GameRendererMixin {
 		)
 	)
 	private void statusEffects$drawStatusEffects(float tickDelta, long startTime, CallbackInfo ci) {
-		StatusEffectsHUD hud = new StatusEffectsHUD();
-		hud.drawStatusEffects();
+		StatusEffects.drawStatusEffects();
 	}
 }
