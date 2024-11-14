@@ -43,17 +43,14 @@ public class StatusEffects implements ModInitializer {
 				int index = statusEffect.getIconIndex();
 				gui.drawTexture(hudX + 6, hudY + 7, index % 8 * iconPixels, 198 + index / 8 * iconPixels, iconPixels, iconPixels);
 			}
-			String string = I18n.translate(statusEffect.getTranslationKey());
-			if (statusEffectInstance.getAmplifier() == 1) {
-				string = string + " " + I18n.translate("enchantment.level.2");
-			} else if (statusEffectInstance.getAmplifier() == 2) {
-				string = string + " " + I18n.translate("enchantment.level.3");
-			} else if (statusEffectInstance.getAmplifier() == 3) {
-				string = string + " " + I18n.translate("enchantment.level.4");
+			String effectName = I18n.translate(statusEffect.getTranslationKey());
+			String duration = StatusEffect.getDurationString(statusEffectInstance);
+			int amplifier = statusEffectInstance.getAmplifier();
+			if (amplifier > 0 && amplifier < 4) {
+				effectName += " " + I18n.translate("enchantment.level." + (amplifier + 1));
 			}
-			minecraft.textRenderer.drawWithShadow(string, hudX + 10 + iconPixels, hudY + 6, 0xFFFFFF);
-			String string2 = StatusEffect.getDurationString(statusEffectInstance);
-			minecraft.textRenderer.drawWithShadow(string2, hudX + 10 + iconPixels, hudY + 6 + 10, 0x7F7F7F);
+			minecraft.textRenderer.drawWithShadow(effectName, hudX + 10 + iconPixels, hudY + 6, 0xFFFFFF);
+			minecraft.textRenderer.drawWithShadow(duration, hudX + 10 + iconPixels, hudY + 6 + 10, 0x7F7F7F);
 			hudY += space;
 		}
 	}
