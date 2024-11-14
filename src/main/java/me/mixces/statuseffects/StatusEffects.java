@@ -67,6 +67,8 @@ public class StatusEffects implements ModInitializer {
 				duration = "**:**";
 			}
 			minecraft.textRenderer.drawWithShadow(duration, x + 10 + iconPixels, y + 6 + 10, 0x7F7F7F);
+
+			/* spacing */
 			y += iconPixels + entrySpacing;
 		}
 	}
