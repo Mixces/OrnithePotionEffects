@@ -34,7 +34,6 @@ public class StatusEffects implements ModInitializer {
 		int hudY = (window.getHeight() / 2) - ((iconPixels + (collection.size() > 1 ? entrySpacing : 0)) / 2) * (collection.size() + 1);
 		GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		GlStateManager.disableLighting();
-		int space = iconPixels + entrySpacing;
 		for (StatusEffectInstance statusEffectInstance : collection) {
 			StatusEffect statusEffect = StatusEffect.BY_ID[statusEffectInstance.getId()];
 			GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -51,7 +50,7 @@ public class StatusEffects implements ModInitializer {
 			}
 			minecraft.textRenderer.drawWithShadow(effectName, hudX + 10 + iconPixels, hudY + 6, 0xFFFFFF);
 			minecraft.textRenderer.drawWithShadow(duration, hudX + 10 + iconPixels, hudY + 6 + 10, 0x7F7F7F);
-			hudY += space;
+			hudY += iconPixels + entrySpacing;
 		}
 	}
 
