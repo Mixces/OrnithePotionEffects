@@ -30,8 +30,8 @@ public class StatusEffects implements ModInitializer {
 		}
 		int iconPixels = 18;
 		int entrySpacing = 4;
-		int hudX = 0;
-		int hudY = (window.getHeight() / 2) - ((iconPixels + (collection.size() > 1 ? entrySpacing : 0)) / 2) * (collection.size() + 1);
+		int x = 0;
+		int y = (window.getHeight() / 2) - ((iconPixels + (collection.size() > 1 ? entrySpacing : 0)) / 2) * (collection.size() + 1);
 		GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		GlStateManager.disableLighting();
 		for (StatusEffectInstance statusEffectInstance : collection) {
@@ -40,7 +40,7 @@ public class StatusEffects implements ModInitializer {
 			minecraft.getTextureManager().bind(MENU_LOCATION);
 			if (statusEffect.hasIcon()) {
 				int index = statusEffect.getIconIndex();
-				gui.drawTexture(hudX + 6, hudY + 7, index % 8 * iconPixels, 198 + index / 8 * iconPixels, iconPixels, iconPixels);
+				gui.drawTexture(x + 6, y + 7, index % 8 * iconPixels, 198 + index / 8 * iconPixels, iconPixels, iconPixels);
 			}
 			String effectName = I18n.translate(statusEffect.getTranslationKey());
 			String duration = StatusEffect.getDurationString(statusEffectInstance);
@@ -48,9 +48,9 @@ public class StatusEffects implements ModInitializer {
 			if (amplifier > 0 && amplifier < 4) {
 				effectName += " " + I18n.translate("enchantment.level." + (amplifier + 1));
 			}
-			minecraft.textRenderer.drawWithShadow(effectName, hudX + 10 + iconPixels, hudY + 6, 0xFFFFFF);
-			minecraft.textRenderer.drawWithShadow(duration, hudX + 10 + iconPixels, hudY + 6 + 10, 0x7F7F7F);
-			hudY += iconPixels + entrySpacing;
+			minecraft.textRenderer.drawWithShadow(effectName, x + 10 + iconPixels, y + 6, 0xFFFFFF);
+			minecraft.textRenderer.drawWithShadow(duration, x + 10 + iconPixels, y + 6 + 10, 0x7F7F7F);
+			y += iconPixels + entrySpacing;
 		}
 	}
 
