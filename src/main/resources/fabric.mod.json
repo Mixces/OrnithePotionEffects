@@ -17,7 +17,10 @@
 	"entrypoints": {
 		"init": [
       "me.mixces.statuseffects.StatusEffects"
-		]
+		],
+    "modmenu": [
+      "me.mixces.statuseffects.config.ConfigIntegration"
+    ]
 	},
 	"mixins": [
     "statuseffects.mixins.json"

@@ -1,6 +1,7 @@
 package me.mixces.statuseffects;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import me.mixces.statuseffects.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.render.Window;
@@ -8,8 +9,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
 import net.minecraft.resource.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.ornithemc.osl.config.api.ConfigManager;
 
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 
@@ -18,10 +18,15 @@ import java.util.Collection;
 public class StatusEffects implements ModInitializer {
 
 	private static final Identifier MENU_LOCATION = new Identifier("textures/gui/container/inventory.png");
-	public static final Logger LOGGER = LogManager.getLogger("Status Effects");
 
-	public static void drawStatusEffects() {
+	public static void drawStatusEffects(int hudX, int hudY) {
 		final Minecraft minecraft = Minecraft.getInstance();
+
+		/* cant have a null player */
+		if (minecraft.player == null) {
+			return;
+		}
+
 		final Window window = new Window(minecraft);
 		final GuiElement gui = new GuiElement();
 
@@ -36,8 +41,8 @@ public class StatusEffects implements ModInitializer {
 		/* space between each potion entry */
 		final int entrySpacing = 4;
 
-		int x = 0;
-		int y = (window.getHeight() / 2) - ((iconPixels + (collection.size() > 1 ? entrySpacing : 0)) / 2) * (collection.size() + 1);
+		int x = hudX;
+		int y = hudY + (window.getHeight() / 2) - ((iconPixels + (collection.size() > 1 ? entrySpacing : 0)) / 2) * (collection.size() + 1);
 
 		GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		GlStateManager.disableLighting();
@@ -75,6 +80,6 @@ public class StatusEffects implements ModInitializer {
 
 	@Override
 	public void init() {
-		LOGGER.info("Initializing Status Effects!");
+		ConfigManager.register(new Config());
 	}
 }
