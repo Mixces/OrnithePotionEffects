@@ -3,6 +3,7 @@ package me.mixces.statuseffects.config;
 import net.ornithemc.osl.config.api.ConfigScope;
 import net.ornithemc.osl.config.api.LoadingPhase;
 import net.ornithemc.osl.config.api.config.BaseConfig;
+import net.ornithemc.osl.config.api.config.option.BooleanOption;
 import net.ornithemc.osl.config.api.config.option.IntegerOption;
 import net.ornithemc.osl.config.api.serdes.FileSerializerType;
 import net.ornithemc.osl.config.api.serdes.SerializerTypes;
@@ -12,6 +13,9 @@ public class Config extends BaseConfig {
 	/* Position */
 	public static final IntegerOption HUD_X = new IntegerOption("hudX", null, 0);
 	public static final IntegerOption HUD_Y = new IntegerOption("hudY", null, 0);
+
+	/* Properties */
+	public static final BooleanOption ENABLED = new BooleanOption("enabled", null, true);
 
 	/* Properties */
 	//todo: add properties
@@ -56,7 +60,8 @@ public class Config extends BaseConfig {
 		registerOptions(
 			"StatusEffects",
 			HUD_X,
-			HUD_Y
+			HUD_Y,
+			ENABLED
 		);
 	}
 }

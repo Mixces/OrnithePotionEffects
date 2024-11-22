@@ -1,5 +1,6 @@
 package me.mixces.statuseffects.mixin;
 
+import me.mixces.statuseffects.config.Config;
 import net.minecraft.client.gui.screen.inventory.menu.InventoryMenuScreen;
 import net.minecraft.client.gui.screen.inventory.menu.PlayerInventoryScreen;
 import net.minecraft.inventory.menu.InventoryMenu;
@@ -20,7 +21,9 @@ public abstract class PlayerInventoryScreenMixin extends InventoryMenuScreen  {
 		at = @At("HEAD"),
 		cancellable = true)
 	private void statusEffects$disableOffset(CallbackInfo ci) {
-		ci.cancel();
+		if (Config.ENABLED.get()) {
+			ci.cancel();
+		}
 	}
 
 	@Inject(
@@ -33,6 +36,8 @@ public abstract class PlayerInventoryScreenMixin extends InventoryMenuScreen  {
 		cancellable = true
 	)
 	private void statusEffects$disableInventoryHUD(CallbackInfo ci) {
-		ci.cancel();
+		if (Config.ENABLED.get()) {
+			ci.cancel();
+		}
 	}
 }
