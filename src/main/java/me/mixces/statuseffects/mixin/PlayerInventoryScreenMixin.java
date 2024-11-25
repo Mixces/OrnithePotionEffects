@@ -1,20 +1,14 @@
 package me.mixces.statuseffects.mixin;
 
 import me.mixces.statuseffects.config.Config;
-import net.minecraft.client.gui.screen.inventory.menu.InventoryMenuScreen;
 import net.minecraft.client.gui.screen.inventory.menu.PlayerInventoryScreen;
-import net.minecraft.inventory.menu.InventoryMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerInventoryScreen.class)
-public abstract class PlayerInventoryScreenMixin extends InventoryMenuScreen  {
-
-	public PlayerInventoryScreenMixin(InventoryMenu menu) {
-		super(menu);
-	}
+public abstract class PlayerInventoryScreenMixin  {
 
 	@Inject(
 		method = "checkStatusEffects",

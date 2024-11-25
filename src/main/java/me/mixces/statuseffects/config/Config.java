@@ -1,5 +1,6 @@
 package me.mixces.statuseffects.config;
 
+import net.minecraft.text.Formatting;
 import net.ornithemc.osl.config.api.ConfigScope;
 import net.ornithemc.osl.config.api.LoadingPhase;
 import net.ornithemc.osl.config.api.config.BaseConfig;
@@ -19,6 +20,10 @@ public class Config extends BaseConfig {
 
 	/* Properties */
 	//todo: add properties
+
+	public static String getToggleState() {
+		return "Mod: " + (Config.ENABLED.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
+	}
 
 	@Override
 	public String getNamespace() {

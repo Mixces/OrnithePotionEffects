@@ -1,12 +1,12 @@
 package me.mixces.statuseffects.mixin;
 
-import me.mixces.statuseffects.StatusEffects;
 import me.mixces.statuseffects.config.Config;
 import me.mixces.statuseffects.config.ConfigScreen;
+import me.mixces.statuseffects.hud.StatusEffectsHud;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.GameRenderer;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import net.minecraft.client.resource.manager.ResourceManager;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,6 +17,19 @@ public class GameRendererMixin {
 	@Shadow
 	private Minecraft minecraft;
 
+	@Unique
+	private StatusEffectsHud statusEffects$hud;
+
+	@Inject(
+		method = "<init>",
+		at = @At(
+			value = "TAIL"
+		)
+	)
+	private void statusEffects$initStatusEffectsHud(Minecraft minecraft, ResourceManager resourceManager, CallbackInfo ci) {
+		statusEffects$hud = new StatusEffectsHud();
+	}
+
 	@Inject(
 		method = "render(FJ)V",
 		at = @At(
@@ -26,8 +39,8 @@ public class GameRendererMixin {
 		)
 	)
 	private void statusEffects$drawStatusEffects(float tickDelta, long startTime, CallbackInfo ci) {
-		if (!minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen) && Config.ENABLED.get()) {
-			StatusEffects.drawStatusEffects(Config.HUD_X.get(), Config.HUD_Y.get(), false);
+		if (Config.ENABLED.get() && !minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen)) {
+			statusEffects$hud.drawStatusEffects(Config.HUD_X.get(), Config.HUD_Y.get(), false);
 		}
 	}
 }

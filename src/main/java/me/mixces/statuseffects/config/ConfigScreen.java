@@ -1,22 +1,26 @@
 package me.mixces.statuseffects.config;
 
-import me.mixces.statuseffects.StatusEffects;
+import me.mixces.statuseffects.hud.StatusEffectsHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Formatting;
 import net.ornithemc.osl.config.api.ConfigManager;
 
 public class ConfigScreen extends Screen {
 
+	private final StatusEffectsHud hud;
 	private final Screen parentScreen;
-	private int hudWidth;
-	private int hudHeight;
+	/* hud editor properties */
+	private final int hudWidth = 79;
+	private final int hudHeight = 40;
+	private final int hudBound = 4;
+	/* mouse movement */
 	private boolean isDragging = false;
 	private int dragOffsetX;
 	private int dragOffsetY;
 
 	public ConfigScreen(Screen parentScreen) {
 		this.parentScreen = parentScreen;
+		this.hud = new StatusEffectsHud();
 	}
 
 	@Override
@@ -30,11 +34,13 @@ public class ConfigScreen extends Screen {
 		dragOffsetX = mouseX;
 		dragOffsetY = mouseY;
 
-		int x = Config.HUD_X.get();
-		int y = Config.HUD_Y.get();
+		if (Config.ENABLED.get()) {
+			int x = Config.HUD_X.get();
+			int y = Config.HUD_Y.get();
 
-		drawOutlineBox(x, y, hudWidth, hudHeight);
-		StatusEffects.drawStatusEffects(x,y, true);
+			drawOutlineBox(x, y);
+			hud.drawStatusEffects(x, y, true);
+		}
 
 		if (!isDragging) {
 			super.render(mouseX, mouseY, tickDelta);
@@ -44,10 +50,7 @@ public class ConfigScreen extends Screen {
 	@Override
 	public void init() {
 		super.init();
-		hudWidth = 80;
-		hudHeight = 50;
-
-		buttons.add(new ButtonWidget(0, width / 2 - 75, height - 75, 150, 20, getToggleState()));
+		buttons.add(new ButtonWidget(0, width / 2 - 75, height - 75, 150, 20, Config.getToggleState()));
 		buttons.add(new ButtonWidget(1, width / 2 - 75, height - 51, 150, 20, "Reset Position"));
 		buttons.add(new ButtonWidget(2, width / 2 - 75, height - 27, 150, 20, "Done"));
 	}
@@ -61,11 +64,11 @@ public class ConfigScreen extends Screen {
 		switch (button.id) {
 			case 0:
 				Config.ENABLED.set(!Config.ENABLED.get());
-				button.message = getToggleState();
+				button.message = Config.getToggleState();
 				break;
 			case 1:
-				Config.HUD_X.set(0);
-				Config.HUD_Y.set(height / 2 - 18);
+				Config.HUD_X.set(4 /* entry space */);
+				Config.HUD_Y.set(height / 2);
 				break;
 			case 2:
 				ConfigManager.save(new Config());
@@ -102,21 +105,15 @@ public class ConfigScreen extends Screen {
 	}
 
 	public boolean isMouseOver(int mouseX, int mouseY) {
-		int offset = 4;
 		int x = Config.HUD_X.get();
 		int y = Config.HUD_Y.get() - hudHeight / 2;
-		return mouseX >= x - offset && mouseY >= y - offset && mouseX < x + offset + hudWidth && mouseY < y + offset + hudHeight;
+		return mouseX >= x - hudBound && mouseY >= y - hudBound && mouseX < x + hudBound + hudWidth && mouseY < y + hudBound + hudHeight;
 	}
 
-	private void drawOutlineBox(int x, int y, int width, int height) {
-		int offset = 4;
-		drawHorizontalLine(x - offset, x + width + offset, y - height / 2 - offset, 0x80FFFFFF);
-		drawVerticalLine(x - offset, y - height / 2 - offset, y + height / 2 + offset, 0x80FFFFFF);
-		drawHorizontalLine(x - offset, x + width + offset, y + height / 2 + offset, 0x80FFFFFF);
-		drawVerticalLine(x + width + offset, y - height / 2 - offset, y + height / 2 + offset, 0x80FFFFFF);
-	}
-
-	private String getToggleState() {
-		return "Mod: " + (Config.ENABLED.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
+	private void drawOutlineBox(int x, int y) {
+		drawHorizontalLine(x - hudBound, x + hudWidth + hudBound, y - hudHeight / 2 - hudBound, 0x80FFFFFF);
+		drawVerticalLine(x - hudBound, y - hudHeight / 2 - hudBound, y + hudHeight / 2 + hudBound, 0x80FFFFFF);
+		drawHorizontalLine(x - hudBound, x + hudWidth + hudBound, y + hudHeight / 2 + hudBound, 0x80FFFFFF);
+		drawVerticalLine(x + hudWidth + hudBound, y - hudHeight / 2 - hudBound, y + hudHeight / 2 + hudBound, 0x80FFFFFF);
 	}
 }
