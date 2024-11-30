@@ -22,7 +22,7 @@ public class Config extends BaseConfig {
 	//todo: add properties
 
 	public static String getToggleState() {
-		return "Mod: " + (Config.ENABLED.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
+		return "Mod: " + (ENABLED.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
 	}
 
 	@Override

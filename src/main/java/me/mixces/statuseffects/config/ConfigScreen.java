@@ -38,6 +38,9 @@ public class ConfigScreen extends Screen {
 			int x = Config.HUD_X.get();
 			int y = Config.HUD_Y.get();
 
+			if (isMouseOver(mouseX, mouseY)) {
+				drawSelectionBox(x, y);
+			}
 			drawOutlineBox(x, y);
 			hud.drawStatusEffects(x, y, true);
 		}
@@ -71,7 +74,6 @@ public class ConfigScreen extends Screen {
 				Config.HUD_Y.set(height / 2);
 				break;
 			case 2:
-				ConfigManager.save(new Config());
 				minecraft.openScreen(parentScreen);
 				break;
 		}
@@ -94,7 +96,6 @@ public class ConfigScreen extends Screen {
 	@Override
 	public void removed() {
 		super.removed();
-		ConfigManager.save(new Config());
 	}
 
 	private void drawGridlines() {
@@ -108,6 +109,10 @@ public class ConfigScreen extends Screen {
 		int x = Config.HUD_X.get();
 		int y = Config.HUD_Y.get() - hudHeight / 2;
 		return mouseX >= x - hudBound && mouseY >= y - hudBound && mouseX < x + hudBound + hudWidth && mouseY < y + hudBound + hudHeight;
+	}
+
+	private void drawSelectionBox(int x, int y) {
+		fill(x - hudBound, y - hudHeight / 2 - hudBound, x + hudWidth + hudBound, y + hudHeight / 2 + hudBound, 0x40FFFFFF);
 	}
 
 	private void drawOutlineBox(int x, int y) {
