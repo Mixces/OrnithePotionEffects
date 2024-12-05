@@ -3,7 +3,6 @@ package me.mixces.statuseffects.config;
 import me.mixces.statuseffects.hud.StatusEffectsHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.ornithemc.osl.config.api.ConfigManager;
 
 public class ConfigScreen extends Screen {
 
@@ -46,6 +45,7 @@ public class ConfigScreen extends Screen {
 		}
 
 		if (!isDragging) {
+			drawCenteredString(textRenderer, "Status Effects", width / 2, 15, 0xFFFFFF);
 			super.render(mouseX, mouseY, tickDelta);
 		}
 	}
